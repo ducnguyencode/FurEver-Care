@@ -1,0 +1,547 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated color scheme to match brand: Green primary + Warm orange secondary + White background */
+  --background: oklch(1 0 0); /* Pure white background */
+  --foreground: oklch(0.25 0.1 142); /* Dark green text for better contrast */
+  --card: oklch(0.99 0.005 142); /* Very light green tint for cards */
+  --card-foreground: oklch(0.25 0.1 142); /* Dark green card text */
+  --popover: oklch(1 0 0); /* White popover */
+  --popover-foreground: oklch(0.25 0.1 142); /* Dark green popover text */
+  --primary: oklch(0.55 0.18 142); /* Green primary (#4CAF50) */
+  --primary-foreground: oklch(1 0 0); /* White text on primary */
+  --secondary: oklch(0.68 0.15 65); /* Warm orange (#FF9800) */
+  --secondary-foreground: oklch(1 0 0); /* White text on secondary */
+  --muted: oklch(0.96 0.01 142); /* Light gray muted with green tint */
+  --muted-foreground: oklch(0.45 0.05 142); /* Medium gray muted text */
+  --accent: oklch(0.68 0.15 65); /* Warm orange accent */
+  --accent-foreground: oklch(1 0 0); /* White text on accent */
+  --destructive: oklch(0.6 0.2 25); /* Red for errors */
+  --destructive-foreground: oklch(1 0 0); /* White text on destructive */
+  --border: oklch(0.92 0.01 142); /* Light green border */
+  --input: oklch(0.98 0.005 142); /* Very light input background */
+  --ring: oklch(0.55 0.18 142 / 0.5); /* Green focus ring */
+  --chart-1: oklch(0.55 0.18 142); /* Green chart color */
+  --chart-2: oklch(0.68 0.15 65); /* Orange chart color */
+  --chart-3: oklch(0.45 0.05 142); /* Gray chart color */
+  --chart-4: oklch(0.96 0.01 142); /* Light chart color */
+  --chart-5: oklch(0.92 0.01 142); /* Border chart color */
+  --radius: 0.375rem; /* Reduced radius for flatter design */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.25 0.1 142);
+  --sidebar-primary: oklch(0.99 0.005 142);
+  --sidebar-primary-foreground: oklch(0.25 0.1 142);
+  --sidebar-accent: oklch(0.68 0.15 65);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.92 0.01 142);
+  --sidebar-ring: oklch(0.55 0.18 142 / 0.5);
+}
+
+.dark {
+  /* Enhanced dark mode colors for better contrast */
+  --background: oklch(0.08 0 0); /* Darker background */
+  --foreground: oklch(0.95 0 0); /* Brighter text */
+  --card: oklch(0.12 0 0); /* Darker cards */
+  --card-foreground: oklch(0.95 0 0); /* Brighter card text */
+  --popover: oklch(0.12 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.65 0.18 142); /* Brighter green primary */
+  --primary-foreground: oklch(0.08 0 0); /* Dark text on primary */
+  --secondary: oklch(0.72 0.15 65); /* Brighter orange */
+  --secondary-foreground: oklch(0.08 0 0); /* Dark text on secondary */
+  --muted: oklch(0.2 0 0); /* Lighter muted background */
+  --muted-foreground: oklch(0.7 0 0); /* Brighter muted text */
+  --accent: oklch(0.72 0.15 65);
+  --accent-foreground: oklch(0.08 0 0);
+  --destructive: oklch(0.6 0.2 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  --border: oklch(0.25 0 0); /* Lighter borders */
+  --input: oklch(0.15 0 0); /* Lighter input background */
+  --ring: oklch(0.65 0.18 142 / 0.5);
+  --chart-1: oklch(0.65 0.18 142);
+  --chart-2: oklch(0.72 0.15 65);
+  --chart-3: oklch(0.6 0 0);
+  --chart-4: oklch(0.35 0 0);
+  --chart-5: oklch(0.25 0 0);
+  --sidebar: oklch(0.12 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.65 0.18 142);
+  --sidebar-primary-foreground: oklch(0.08 0 0);
+  --sidebar-accent: oklch(0.2 0 0);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.25 0 0);
+  --sidebar-ring: oklch(0.65 0.18 142 / 0.5);
+}
+
+@theme inline {
+  /* Updated font configuration to use Poppins */
+  --font-sans: var(--font-poppins);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Added Poppins font family and improved text rendering */
+    font-family: var(--font-poppins), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Enhanced typography for flat design with Poppins */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-poppins);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .font-bold {
+    font-weight: 600 !important;
+  }
+
+  .font-semibold {
+    font-weight: 500 !important;
+  }
+
+  .font-medium {
+    font-weight: 500 !important;
+  }
+
+  /* Added max-width container constraint for better layout control */
+  .container {
+    max-width: 1350px !important;
+  }
+
+  /* Enhanced button styles for flat design with better contrast */
+  .btn-enhanced {
+    @apply transition-all duration-200 ease-in-out;
+    @apply shadow-sm hover:shadow-md;
+    @apply font-medium;
+    border-radius: var(--radius);
+  }
+
+  /* Enhanced primary button styles for better visibility */
+  button[class*="bg-primary"] {
+    @apply shadow-md hover:shadow-lg;
+    @apply transition-all duration-200;
+    @apply font-medium;
+    background: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+    border-radius: var(--radius);
+    border: none;
+  }
+
+  button[class*="bg-primary"]:hover {
+    @apply brightness-110;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px -4px rgba(76, 175, 80, 0.35);
+  }
+
+  /* Fixed outline button styles for better menu button visibility */
+  button[class*="variant-outline"],
+  button[class*="outline"] {
+    @apply shadow-sm hover:shadow-md;
+    @apply transition-all duration-200;
+    @apply font-medium;
+    border-width: 2px !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    background: transparent !important;
+    border-radius: var(--radius);
+  }
+
+  button[class*="variant-outline"]:hover,
+  button[class*="outline"]:hover {
+    transform: translateY(-1px);
+    background: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+    box-shadow: 0 6px 16px -4px rgba(76, 175, 80, 0.3);
+  }
+
+  /* Enhanced secondary button styles */
+  button[class*="bg-secondary"] {
+    @apply shadow-md hover:shadow-lg;
+    @apply transition-all duration-200;
+    @apply font-medium;
+    background: var(--secondary) !important;
+    color: var(--secondary-foreground) !important;
+    border-radius: var(--radius);
+  }
+
+  button[class*="bg-secondary"]:hover {
+    @apply brightness-110;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px -4px rgba(255, 152, 0, 0.35);
+  }
+
+  /* Enhanced tab navigation for better menu button functionality */
+  [role="tablist"] button {
+    @apply transition-all duration-200;
+    @apply font-medium;
+    border: 2px solid transparent !important;
+    border-radius: var(--radius);
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--muted-foreground);
+  }
+
+  [role="tablist"] button:hover {
+    color: var(--primary);
+    background: var(--card);
+    border-color: var(--border) !important;
+  }
+
+  [role="tablist"] button[data-state="active"] {
+    @apply shadow-md;
+    background: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+    border-color: var(--primary) !important;
+    font-weight: 500;
+  }
+
+  /* Enhanced radio button styling for better responsive design */
+  [role="radiogroup"] > div {
+    @apply transition-all duration-200 ease-in-out;
+    @apply hover:shadow-sm;
+    min-height: 48px; /* Better touch targets */
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    border: 2px solid var(--border);
+    cursor: pointer;
+  }
+
+  [role="radiogroup"] > div:hover {
+    border-color: var(--primary);
+    background-color: var(--card);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px -2px rgba(76, 175, 80, 0.15);
+  }
+
+  [role="radiogroup"] > div[data-state="checked"] {
+    border-color: var(--primary);
+    background-color: var(--primary) / 5;
+    box-shadow: 0 2px 8px -2px rgba(76, 175, 80, 0.2);
+  }
+
+  /* Improved radio button indicator styling */
+  [role="radio"] {
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+  }
+
+  [role="radio"]:focus {
+    @apply ring-2 ring-primary ring-offset-2;
+    outline: none;
+  }
+
+  [role="radio"][data-state="checked"] {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+  }
+
+  [role="radio"][data-state="checked"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary-foreground);
+  }
+
+  /* Focus states for accessibility */
+  button:focus-visible {
+    @apply ring-2 ring-ring ring-offset-2;
+    outline: none;
+  }
+
+  /* Card hover effects for flat design */
+  .card-hover {
+    @apply transition-all duration-200 ease-in-out;
+    @apply hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  /* Input focus enhancements */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    @apply ring-2 ring-primary ring-offset-1;
+    @apply border-primary;
+  }
+
+  /* Badge enhancements for flat design */
+  .badge {
+    @apply font-medium;
+    @apply shadow-sm;
+    border-radius: calc(var(--radius) - 1px);
+    font-weight: 500;
+  }
+
+  /* Link hover effects */
+  a:hover {
+    @apply transition-colors duration-200;
+  }
+
+  /* Enhanced responsive design for better mobile experience */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    button {
+      min-height: 44px; /* Better touch targets on mobile */
+    }
+
+    /* Improved radio button spacing on mobile */
+    [role="radiogroup"] > div {
+      min-height: 52px;
+      padding: 1rem 0.75rem;
+    }
+
+    [role="radiogroup"] label {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    /* Better text wrapping on mobile */
+    [role="radiogroup"] label span {
+      word-break: break-word;
+      hyphens: auto;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    /* Improved header spacing on mobile */
+    header .flex {
+      gap: 0.5rem;
+    }
+
+    header .text-xl {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .grid-cols-2 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .md\:grid-cols-2 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .md\:grid-cols-3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .md\:grid-cols-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Better tab navigation on tablets */
+    [role="tablist"] {
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    [role="tablist"]::-webkit-scrollbar {
+      display: none;
+    }
+
+    [role="tablist"] button {
+      white-space: nowrap;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    [role="radiogroup"] > div {
+      padding: 1rem 1.25rem;
+    }
+
+    [role="radiogroup"] label {
+      font-size: 1rem;
+    }
+
+    [role="radio"] {
+      width: 22px !important;
+      height: 22px !important;
+    }
+
+    [role="radio"][data-state="checked"]::after {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  /* Enhanced card layouts for consistent button alignment */
+  .pet-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .pet-card .card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .pet-card .adopt-button {
+    margin-top: auto;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 14px 0 rgba(76, 175, 80, 0.3);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .pet-card .adopt-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px 0 rgba(76, 175, 80, 0.4);
+  }
+}
+
+/* Updated animations for smoother flat design interactions */
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Improved loading states */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Enhanced scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}

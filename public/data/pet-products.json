@@ -1,0 +1,104 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Premium Dog Food",
+      "category": "Dog/Cat Food",
+      "price": "$29.99",
+      "image": "/pet-food-bowl-set.jpg",
+      "description": "High-quality nutrition for adult dogs with real chicken as the first ingredient.",
+      "rating": 4.8,
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "Interactive Cat Toy",
+      "category": "Toys",
+      "price": "$15.99",
+      "image": "/pet-toy-bundle.jpg",
+      "description": "Engaging feather wand toy to keep your cat active and entertained.",
+      "rating": 4.6,
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "name": "Pet Grooming Kit",
+      "category": "Grooming Essentials",
+      "price": "$39.99",
+      "image": "/pet-carrier-bag.jpg",
+      "description": "Complete grooming set with brushes, nail clippers, and shampoo.",
+      "rating": 4.7,
+      "inStock": true
+    },
+    {
+      "id": 4,
+      "name": "Cozy Pet Bed",
+      "category": "Bedding and Apparel",
+      "price": "$49.99",
+      "image": "/pet-food-bowl-set.jpg",
+      "description": "Soft, washable pet bed for ultimate comfort and relaxation.",
+      "rating": 4.9,
+      "inStock": true
+    },
+    {
+      "id": 5,
+      "name": "Omega-3 Supplements",
+      "category": "Health Supplements",
+      "price": "$24.99",
+      "image": "/pet-dental-chews.jpg",
+      "description": "Essential fatty acids to support your pet's coat and joint health.",
+      "rating": 4.5,
+      "inStock": true
+    },
+    {
+      "id": 6,
+      "name": "Puppy Training Treats",
+      "category": "Dog/Cat Food",
+      "price": "$12.99",
+      "image": "/pet-toy-bundle.jpg",
+      "description": "Healthy, bite-sized treats perfect for training sessions.",
+      "rating": 4.8,
+      "inStock": true
+    },
+    {
+      "id": 7,
+      "name": "Cat Scratching Post",
+      "category": "Toys",
+      "price": "$34.99",
+      "image": "/cat-scratching-post.jpg",
+      "description": "Multi-level scratching post with sisal rope and plush surfaces.",
+      "rating": 4.7,
+      "inStock": true
+    },
+    {
+      "id": 8,
+      "name": "Dog Leash and Collar Set",
+      "category": "Bedding and Apparel",
+      "price": "$22.99",
+      "image": "/dog-leash-collar-set.jpg",
+      "description": "Durable nylon leash and collar set in multiple colors.",
+      "rating": 4.6,
+      "inStock": false
+    },
+    {
+      "id": 9,
+      "name": "Pet Dental Chews",
+      "category": "Health Supplements",
+      "price": "$18.99",
+      "image": "/pet-dental-chews.jpg",
+      "description": "Natural dental chews to promote oral health and fresh breath.",
+      "rating": 4.4,
+      "inStock": true
+    },
+    {
+      "id": 10,
+      "name": "Pet Carrier Bag",
+      "category": "Toys",
+      "price": "$89.99",
+      "image": "/pet-carrier-bag.jpg",
+      "description": "Comfortable and secure carrier bag for traveling with your pet.",
+      "rating": 4.3,
+      "inStock": true
+    }
+  ]
+}
