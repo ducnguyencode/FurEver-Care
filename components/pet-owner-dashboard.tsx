@@ -26,6 +26,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import QRCode from "react-qr-code";
 import { useToast } from "@/components/ui/use-toast";
 import Footer from "@/components/footer";
 
@@ -66,6 +67,23 @@ export default function PetOwnerDashboard({
   const { toast } = useToast();
   const [tabValue, setTabValue] = useState("care");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isQRDialogOpen, setIsQRDialogOpen] = useState(false);
+  const [isHealthOpen, setIsHealthOpen] = useState(false);
+  const [isWeightOpen, setIsWeightOpen] = useState(false);
+  const [isTriageOpen, setIsTriageOpen] = useState(false);
+  const [healthRecords, setHealthRecords] = useState<{
+    vaccinations: string[];
+    medications: string[];
+    allergies: string[];
+  }>({ vaccinations: [], medications: [], allergies: [] });
+  const [newRecord, setNewRecord] = useState<{
+    type: "vaccinations" | "medications" | "allergies";
+    value: string;
+  }>({ type: "vaccinations", value: "" });
+  const [weights, setWeights] = useState<Array<{ date: string; kg: number }>>(
+    []
+  );
+  const [triageResult, setTriageResult] = useState<string | null>(null);
 
   useEffect(() => {
     const savedFormData = localStorage.getItem("petOwnerFormData");
@@ -204,20 +222,48 @@ export default function PetOwnerDashboard({
     }
   };
 
+  const petHandle = (petName || userName || "pet")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+  const publicProfileUrl = `${window.location.origin}/${petHandle}`;
+
+  useEffect(() => {
+    // Save minimal public profile to localStorage for demo
+    if (petName) {
+      localStorage.setItem(
+        `pet-public-${petHandle}`,
+        JSON.stringify({
+          name: petName,
+          type: petSpecies,
+          breed: petBreed,
+          image: "/placeholder-user.jpg",
+          color: "",
+          lastSeen: "",
+          notes: "",
+          ownerPhone: "+8490xxxxxxx",
+          ownerZalo: "+8490xxxxxxx",
+        })
+      );
+    }
+  }, [petHandle, petName, petSpecies, petBreed]);
+
   return (
     <div className="min-h-screen bg-background">
       {showModal && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={closeModal}>
+          <div className="bg-background rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative" onClick={(e) => e.stopPropagation()}>
+            <button 
+              onClick={closeModal}
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5 text-muted-foreground" />
+            </button>
             <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-primary">
-                  {selectedProduct.name}
-                </h2>
-                <Button variant="ghost" size="sm" onClick={closeModal}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
+              <h2 className="text-2xl font-bold text-primary mb-4 pr-8">
+                {selectedProduct.name}
+              </h2>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -269,31 +315,6 @@ export default function PetOwnerDashboard({
                       <strong>Product ID:</strong> #{selectedProduct.id}
                     </p>
                   </div>
-
-                  <div className="flex gap-3">
-                    <Button
-                      className="flex-1 font-semibold px-6 py-3 rounded-lg bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary text-secondary-foreground shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
-                      disabled={!selectedProduct.inStock}
-                      onClick={() => {
-                        toast({
-                          title: "Added to Cart! 🛒",
-                          description: `${selectedProduct.name} has been added to your cart successfully.`,
-                          variant: "default",
-                        });
-                        closeModal();
-                      }}
-                    >
-                      <ShoppingCart className="h-5 w-5 mr-2" />
-                      Add to Cart
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      onClick={closeModal}
-                      className="px-6 py-3 font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      Close
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -327,6 +348,238 @@ export default function PetOwnerDashboard({
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm overflow-hidden w-full sm:w-auto">
+              <Dialog open={isQRDialogOpen} onOpenChange={setIsQRDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="font-medium">
+                    Pet ID QR
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-sm">
+                  <DialogTitle>Pet ID QR</DialogTitle>
+                  <DialogDescription>
+                    Scan to open the public profile.
+                  </DialogDescription>
+                  <div className="flex flex-col items-center gap-3">
+                    <QRCode value={publicProfileUrl} size={180} />
+                    <p className="text-xs break-all text-muted-foreground">
+                      {publicProfileUrl}
+                    </p>
+                    <Button
+                      onClick={() =>
+                        navigator.clipboard.writeText(publicProfileUrl)
+                      }
+                      className="w-full"
+                    >
+                      Copy Link
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <Dialog open={isHealthOpen} onOpenChange={setIsHealthOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="font-medium hidden sm:inline-flex"
+                  >
+                    E‑PetBook
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-lg">
+                  <DialogTitle>E‑PetBook</DialogTitle>
+                  <DialogDescription>
+                    Vaccinations, Medications, Allergies
+                  </DialogDescription>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {(
+                      ["vaccinations", "medications", "allergies"] as const
+                    ).map((k) => (
+                      <div key={k} className="p-2 border rounded-md">
+                        <div className="text-xs font-semibold capitalize mb-1">
+                          {k}
+                        </div>
+                        <ul className="space-y-1 max-h-28 overflow-auto text-xs">
+                          {healthRecords[k].map((v, i) => (
+                            <li key={i} className="text-muted-foreground">
+                              • {v}
+                            </li>
+                          ))}
+                          {healthRecords[k].length === 0 && (
+                            <li className="text-muted-foreground">Empty</li>
+                          )}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <select
+                      className="border rounded-md px-2 py-2 text-sm"
+                      value={newRecord.type}
+                      onChange={(e) =>
+                        setNewRecord((p) => ({
+                          ...p,
+                          type: e.target.value as any,
+                        }))
+                      }
+                    >
+                      <option value="vaccinations">Vaccinations</option>
+                      <option value="medications">Medications</option>
+                      <option value="allergies">Allergies</option>
+                    </select>
+                    <Input
+                      placeholder="Detail"
+                      className="sm:col-span-2"
+                      value={newRecord.value}
+                      onChange={(e) =>
+                        setNewRecord((p) => ({ ...p, value: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <Button
+                    onClick={() => {
+                      if (!newRecord.value.trim()) return;
+                      setHealthRecords((prev) => ({
+                        ...prev,
+                        [newRecord.type]: [
+                          newRecord.value.trim(),
+                          ...prev[newRecord.type],
+                        ],
+                      }));
+                      setNewRecord((p) => ({ ...p, value: "" }));
+                    }}
+                    className="w-full font-medium"
+                  >
+                    Add Record
+                  </Button>
+                </DialogContent>
+              </Dialog>
+              <Dialog open={isWeightOpen} onOpenChange={setIsWeightOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="font-medium hidden sm:inline-flex"
+                  >
+                    Weight
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogTitle>Weight Tracker</DialogTitle>
+                  <DialogDescription>
+                    Enter weight in kg and date.
+                  </DialogDescription>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Input id="wt-date" placeholder="Date (YYYY-MM-DD)" />
+                    <Input
+                      id="wt-kg"
+                      placeholder="Kg"
+                      type="number"
+                      step="0.1"
+                    />
+                  </div>
+                  <Button
+                    onClick={() => {
+                      const dateEl = document.getElementById(
+                        "wt-date"
+                      ) as HTMLInputElement | null;
+                      const kgEl = document.getElementById(
+                        "wt-kg"
+                      ) as HTMLInputElement | null;
+                      const date = (dateEl?.value || "").trim();
+                      const kg = parseFloat((kgEl?.value || "").trim());
+                      if (!date || isNaN(kg)) return;
+                      setWeights((prev) =>
+                        [{ date, kg }, ...prev].slice(0, 30)
+                      );
+                      if (dateEl) dateEl.value = "";
+                      if (kgEl) kgEl.value = "";
+                    }}
+                    className="w-full font-medium"
+                  >
+                    Add Entry
+                  </Button>
+                  <div className="mt-3 space-y-2 max-h-48 overflow-auto">
+                    {weights.map((w, i) => (
+                      <div
+                        key={i}
+                        className="flex justify-between text-sm p-2 border rounded-md"
+                      >
+                        <span>{w.date}</span>
+                        <span className="font-semibold">{w.kg} kg</span>
+                      </div>
+                    ))}
+                    {weights.length === 0 && (
+                      <p className="text-sm text-muted-foreground">
+                        No entries yet.
+                      </p>
+                    )}
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <Dialog open={isTriageOpen} onOpenChange={setIsTriageOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="font-medium hidden sm:inline-flex"
+                  >
+                    Symptoms
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogTitle>Symptom Checker</DialogTitle>
+                  <DialogDescription>
+                    Simple rule-based triage (not a diagnosis).
+                  </DialogDescription>
+                  <div className="space-y-2 text-sm">
+                    <p>Is your pet lethargic or not eating?</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setTriageResult("Visit a clinic within 24 hours.")
+                        }
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setTriageResult(
+                            "Monitor at home and ensure hydration."
+                          )
+                        }
+                      >
+                        No
+                      </Button>
+                    </div>
+                    <p>Is there persistent vomiting (&gt;2 times/day)?</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setTriageResult("Urgent: call a clinic today.")
+                        }
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setTriageResult("Likely mild. Continue monitoring.")
+                        }
+                      >
+                        No
+                      </Button>
+                    </div>
+                    {triageResult && (
+                      <div className="p-3 bg-primary/5 border border-primary/20 rounded-md font-medium">
+                        {triageResult}
+                      </div>
+                    )}
+                  </div>
+                </DialogContent>
+              </Dialog>
               <div className="flex items-center gap-1 flex-shrink-0">
                 <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-secondary" />
                 <span className="hidden sm:inline">
@@ -379,13 +632,18 @@ export default function PetOwnerDashboard({
                 </div>
                 <div>
                   <Label htmlFor="petSpecies">Species *</Label>
-                  <Input
+                  <select
                     id="petSpecies"
                     value={petSpecies}
                     onChange={(e) => setPetSpecies(e.target.value)}
-                    placeholder="Dog, Cat, etc."
-                    className="mt-1"
-                  />
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md bg-background text-sm sm:text-base"
+                  >
+                    <option value="">Select species</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
                 <div>
                   <Label htmlFor="petBreed">Breed *</Label>

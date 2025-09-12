@@ -100,21 +100,23 @@ export default function Footer({ userRole }: FooterProps) {
   };
 
   const quickLinks = [
-    { name: "Home", href: "#" },
-    { name: "About Us", href: "#" },
-    { name: "Pet Care", href: "#" },
-    { name: "Adoption", href: "#" },
-    { name: "Emergency", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: "Home", href: "/" },
+    { name: "Map", href: "/map" },
+    { name: "Q&A", href: "/qna" },
+    { name: "Contest", href: "/contest" },
+    { name: "Memories", href: "/memories" },
+    { name: "Adoption Matching", href: "/adoption/matching" },
+    { name: "Adoption Process", href: "/adoption/process" },
+    { name: "Donate", href: "/donate" },
   ];
 
   const services = [
-    { name: "Pet Adoption", href: "#" },
-    { name: "Veterinary Care", href: "#" },
-    { name: "Pet Products", href: "#" },
-    { name: "Emergency Services", href: "#" },
-    { name: "Pet Training", href: "#" },
-    { name: "Grooming", href: "#" },
+    { name: "Pet Adoption", href: "/adoption/matching" },
+    { name: "Veterinary Care", href: "/qna" },
+    { name: "Pet Products", href: "/" },
+    { name: "Emergency Services", href: "/qna" },
+    { name: "Pet Training", href: "/qna" },
+    { name: "Grooming", href: "/contest" },
   ];
 
   const partners = [
@@ -127,17 +129,27 @@ export default function Footer({ userRole }: FooterProps) {
     {
       name: "Facebook",
       icon: Facebook,
-      href: "#",
+      href: "https://www.facebook.com",
       color: "hover:text-blue-500",
     },
-    { name: "Twitter", icon: Twitter, href: "#", color: "hover:text-sky-400" },
+    {
+      name: "Twitter",
+      icon: Twitter,
+      href: "https://twitter.com",
+      color: "hover:text-sky-400",
+    },
     {
       name: "Instagram",
       icon: Instagram,
-      href: "#",
+      href: "https://www.instagram.com",
       color: "hover:text-pink-500",
     },
-    { name: "YouTube", icon: Youtube, href: "#", color: "hover:text-red-500" },
+    {
+      name: "YouTube",
+      icon: Youtube,
+      href: "https://www.youtube.com",
+      color: "hover:text-red-500",
+    },
   ];
 
   return (
@@ -236,7 +248,7 @@ export default function Footer({ userRole }: FooterProps) {
               <h4 className="font-semibold text-primary mb-6 text-lg">
                 Quick Links
               </h4>
-              <ul className="space-y-3">
+              <ul className="grid grid-cols-2 sm:grid-cols-1 gap-3">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
                     <a
@@ -268,53 +280,34 @@ export default function Footer({ userRole }: FooterProps) {
 
                   return (
                     <li key={service.name} className="relative">
-                      <button
-                        onClick={() =>
-                          handleLinkClick(service.name, service.href)
-                        }
+                      <a
+                        href={service.href}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleLinkClick(service.name, service.href);
+                        }}
                         onMouseEnter={() => setHoveredService(service.name)}
                         onMouseLeave={() => setHoveredService(null)}
                         className={`
-                          text-left cursor-pointer bg-transparent border-none p-2 rounded-lg
-                          transition-all duration-300 hover:translate-x-2 inline-flex items-center gap-2
-                          group relative overflow-hidden
+                          inline-flex items-center justify-between w-full rounded-full px-4 py-2 text-sm font-medium
+                          shadow-sm transition-all duration-300 border
                           ${
                             hasAccess
-                              ? "text-muted-foreground hover:text-primary hover:bg-primary/5"
-                              : "text-muted-foreground/60 hover:text-destructive hover:bg-destructive/5"
+                              ? "bg-card hover:bg-primary/10 text-foreground border-border"
+                              : "bg-card text-muted-foreground/70 border-border"
                           }
                         `}
                       >
-                        {/* Creative hover effect */}
-                        <div
-                          className={`
-                          absolute inset-0 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100
-                          ${
-                            hasAccess
-                              ? "bg-gradient-to-r from-primary/10 to-transparent"
-                              : "bg-gradient-to-r from-destructive/10 to-transparent"
-                          }
-                        `}
-                        ></div>
-
-                        {/* Service icon based on access */}
-                        {hasAccess ? (
-                          <Star className="h-4 w-4 text-primary/60 group-hover:text-primary transition-colors" />
-                        ) : (
-                          <Heart className="h-4 w-4 text-destructive/60 group-hover:text-destructive transition-colors" />
-                        )}
-
-                        <span className="relative z-10">{service.name}</span>
-
-                        {/* Role indicator */}
-                        {hoveredService === service.name && (
-                          <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
-                            {hasAccess
-                              ? "✅ Available"
-                              : `🔒 ${requiredRoles?.join(", ")} only`}
-                          </div>
-                        )}
-                      </button>
+                        <span className="flex items-center gap-2">
+                          {hasAccess ? (
+                            <Star className="h-4 w-4 text-primary" />
+                          ) : (
+                            <Heart className="h-4 w-4 text-muted-foreground" />
+                          )}
+                          {service.name}
+                        </span>
+                        <span className="text-xs text-muted-foreground">→</span>
+                      </a>
                     </li>
                   );
                 })}
@@ -406,14 +399,14 @@ export default function Footer({ userRole }: FooterProps) {
             </div>
             <div className="flex items-center gap-6 text-sm">
               <a
-                href="#"
+                href="/privacy"
                 className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-105 relative group"
               >
                 Privacy Policy
                 <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></div>
               </a>
               <a
-                href="#"
+                href="/terms"
                 className="text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-105 relative group"
               >
                 Terms of Service

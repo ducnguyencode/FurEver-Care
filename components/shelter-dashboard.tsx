@@ -417,13 +417,19 @@ export default function ShelterDashboard({
 
           <TabsContent value="gallery">
             <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 lg:gap-6 sm:justify-between">
-                <div className="flex gap-4 items-center order-2 sm:order-1">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 lg:gap-6">
+                <div className="flex items-stretch gap-3 sm:ml-auto">
+                  <Input
+                    placeholder="Search pets..."
+                    className="w-full sm:max-w-xs lg:max-w-sm"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                   <Select
                     value={selectedFilter}
                     onValueChange={setSelectedFilter}
                   >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[160px] sm:w-[180px]">
                       <SelectValue placeholder="All Categories" />
                     </SelectTrigger>
                     <SelectContent>
@@ -434,12 +440,6 @@ export default function ShelterDashboard({
                     </SelectContent>
                   </Select>
                 </div>
-                <Input
-                  placeholder="Search pets..."
-                  className="w-full sm:max-w-xs lg:max-w-sm order-1 sm:order-2"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">

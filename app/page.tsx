@@ -63,26 +63,8 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="bg-card border-b border-border">
-        <div className="max-w-[1350px] mx-auto px-4 py-4 sm:py-6">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <PawPrint className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-              <div className="text-center">
-                <h1 className="text-2xl sm:text-3xl font-bold text-primary">
-                  FurEver Care
-                </h1>
-                <p className="text-xs sm:text-sm text-secondary font-medium">
-                  They Deserve Forever Love
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <section className="py-8 sm:py-12 bg-gradient-to-b from-card to-background">
+    <div className="min-h-screen">
+      <section className="py-10 sm:py-16">
         <div className="max-w-[1350px] mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-center">
@@ -90,9 +72,9 @@ export default function HomePage() {
                 <img
                   src="/cute-cat-and-dog-sitting-together-with-food-bowl.jpg"
                   alt="Cute pets with food bowl"
-                  className="mx-auto rounded-lg shadow-lg mb-4 sm:mb-6 w-full max-w-[220px] sm:max-w-sm"
+                  className="mx-auto rounded-xl shadow-2xl mb-4 sm:mb-6 w-full max-w-[220px] sm:max-w-sm"
                 />
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4 text-balance max-w-[18ch] mx-auto">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4 text-balance max-w-[18ch] mx-auto drop-shadow">
                   Welcome to FurEver Care
                 </h2>
                 <p className="text-base sm:text-lg text-muted-foreground mb-3 sm:mb-4 text-pretty">
@@ -103,7 +85,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <Card className="w-full order-1 md:order-2 max-w-md mx-auto">
+              <Card className="w-full order-1 md:order-2 max-w-md mx-auto card-premium">
                 <CardHeader className="pb-4 sm:pb-6">
                   <CardTitle className="text-center text-primary text-xl sm:text-2xl font-bold">
                     Get Started
@@ -194,7 +176,7 @@ export default function HomePage() {
                   <Button
                     onClick={handleSubmit}
                     disabled={!userName || !userType}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 text-sm sm:text-base lg:text-lg shadow-lg hover:shadow-xl transition-all"
+                    className="w-full btn-gradient-primary text-primary-foreground font-semibold py-3 text-sm sm:text-base lg:text-lg"
                   >
                     <span className="block sm:hidden">Complete</span>
                     <span className="hidden sm:block">
