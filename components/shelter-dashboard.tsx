@@ -7,6 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -27,6 +34,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import Footer from "@/components/footer";
 
 interface ShelterDashboardProps {
   userName: string;
@@ -213,7 +221,7 @@ export default function ShelterDashboard({
 
   const handleGetDirections = () => {
     window.open(
-      "https://maps.google.com/?q=456+Rescue+Road,+Pet+Haven,+PH+67890",
+      "https://www.google.com/maps/place/Furever+Vets+Central+Urgent+Care+%26+Pet+Resort/@34.7463452,-114.9136755,4z/data=!4m7!3m6!1s0x88e43583a45b275b:0x2aff3959248699d2!8m2!3d30.2149278!4d-81.5156677!15sCgxmdXJldmVyIGNhcmVaDiIMZnVyZXZlciBjYXJlkgEeZW1lcmdlbmN5X3ZldGVyaW5hcmlhbl9zZXJ2aWNlqgFTCg0vZy8xMXdobDJxdGdxCg0vZy8xMXhzMnQxY2hqEAEyHxABIhtdmVpYf2dhJg4VU0UnJ4hvqVXouwgd48JmTzYyEBACIgxmdXJldmVyIGNhcmXgAQA!16s%2Fg%2F11jzhnst4k?entry=tts&g_ep=EgoyMDI1MDkwOS4wIPu8ASoASAFQAw%3D%3D&skid=c4d79328-29eb-4d7d-9e31-58ff80e87085",
       "_blank"
     );
   };
@@ -252,7 +260,7 @@ export default function ShelterDashboard({
                 variant="outline"
                 size="sm"
                 onClick={onBack}
-                className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent flex-shrink-0"
+                className="flex-shrink-0"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
@@ -279,31 +287,19 @@ export default function ShelterDashboard({
                   {location}
                 </span>
               </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
+              <button
+                onClick={() => setTabValue("wishlist")}
+                className="flex items-center gap-1 flex-shrink-0 hover:bg-primary/10 px-2 py-1 rounded-md transition-colors cursor-pointer"
+              >
                 <Heart className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                 <span className="whitespace-nowrap">
                   {wishlist.length} wishlist
                 </span>
-              </div>
+              </button>
             </div>
           </div>
         </div>
       </header>
-
-      <div className="bg-secondary text-secondary-foreground py-2 overflow-hidden">
-        <div className="animate-scroll whitespace-nowrap">
-          <span className="mx-8">
-            🏠 Animal Shelter - Finding forever homes for loving pets
-          </span>
-          <span className="mx-8">📍 Location: {location}</span>
-          <span className="mx-8">
-            ⏰ Current Time: {currentTime.toLocaleString()}
-          </span>
-          <span className="mx-8">
-            💝 {pets.length} pets currently available for adoption
-          </span>
-        </div>
-      </div>
 
       <div className="max-w-[1350px] mx-auto px-4 py-8">
         <Tabs
@@ -322,6 +318,8 @@ export default function ShelterDashboard({
                       ? "Success"
                       : tabValue === "events"
                       ? "Events"
+                      : tabValue === "wishlist"
+                      ? `Wishlist (${wishlist.length})`
                       : "Contact"}
                   </span>
                   <ChevronDown className="h-4 w-4" />
@@ -369,6 +367,15 @@ export default function ShelterDashboard({
                   >
                     Contact
                   </button>
+                  <button
+                    className="w-full text-left p-2 rounded hover:bg-muted"
+                    onClick={() => {
+                      setTabValue("wishlist");
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Wishlist ({wishlist.length})
+                  </button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -399,75 +406,40 @@ export default function ShelterDashboard({
               >
                 Contact
               </TabsTrigger>
+              <TabsTrigger
+                value="wishlist"
+                className="text-xs sm:text-sm font-medium px-3 sm:px-6 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap"
+              >
+                Wishlist ({wishlist.length})
+              </TabsTrigger>
             </TabsList>
           </div>
 
           <TabsContent value="gallery">
             <div className="space-y-6">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <h2 className="text-xl sm:text-2xl font-bold text-primary">
-                  Adoptable Pets
-                </h2>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                  <Input
-                    placeholder="Search pets..."
-                    className="w-full sm:max-w-xs"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
-                    <Button
-                      variant={selectedFilter === "all" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedFilter("all")}
-                      className={`whitespace-nowrap font-medium text-xs sm:text-sm ${
-                        selectedFilter === "all"
-                          ? "bg-primary hover:bg-primary/90 text-primary-foreground"
-                          : "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                      }`}
-                    >
-                      All
-                    </Button>
-                    <Button
-                      variant={selectedFilter === "dog" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedFilter("dog")}
-                      className={`whitespace-nowrap font-medium text-xs sm:text-sm ${
-                        selectedFilter === "dog"
-                          ? "bg-primary hover:bg-primary/90 text-primary-foreground"
-                          : "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                      }`}
-                    >
-                      Dogs
-                    </Button>
-                    <Button
-                      variant={selectedFilter === "cat" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedFilter("cat")}
-                      className={`whitespace-nowrap font-medium text-xs sm:text-sm ${
-                        selectedFilter === "cat"
-                          ? "bg-primary hover:bg-primary/90 text-primary-foreground"
-                          : "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                      }`}
-                    >
-                      Cats
-                    </Button>
-                    <Button
-                      variant={
-                        selectedFilter === "rabbit" ? "default" : "outline"
-                      }
-                      size="sm"
-                      onClick={() => setSelectedFilter("rabbit")}
-                      className={`whitespace-nowrap font-medium text-xs sm:text-sm ${
-                        selectedFilter === "rabbit"
-                          ? "bg-primary hover:bg-primary/90 text-primary-foreground"
-                          : "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                      }`}
-                    >
-                      Rabbits
-                    </Button>
-                  </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 lg:gap-6 sm:justify-between">
+                <div className="flex gap-4 items-center order-2 sm:order-1">
+                  <Select
+                    value={selectedFilter}
+                    onValueChange={setSelectedFilter}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      <SelectItem value="dog">Dogs</SelectItem>
+                      <SelectItem value="cat">Cats</SelectItem>
+                      <SelectItem value="rabbit">Rabbits</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
+                <Input
+                  placeholder="Search pets..."
+                  className="w-full sm:max-w-xs lg:max-w-sm order-1 sm:order-2"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -537,11 +509,10 @@ export default function ShelterDashboard({
                       </p>
 
                       <Button
-                        className={`w-full font-semibold py-2 shadow-lg hover:shadow-xl transition-all mt-auto text-xs sm:text-sm ${
-                          wishlist.includes(pet.id)
-                            ? "bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                            : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                        }`}
+                        variant={
+                          wishlist.includes(pet.id) ? "secondary" : "default"
+                        }
+                        className="w-full font-semibold py-2 mt-auto text-xs sm:text-sm"
                         onClick={() => handleAdoptClick(pet.id, pet.name)}
                       >
                         <Heart
@@ -569,7 +540,7 @@ export default function ShelterDashboard({
                       setSearchTerm("");
                       setSelectedFilter("all");
                     }}
-                    className="mt-4 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium"
+                    className="mt-4 font-medium"
                   >
                     Clear Filters
                   </Button>
@@ -660,7 +631,7 @@ export default function ShelterDashboard({
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                            className="w-full font-medium text-xs sm:text-sm"
                           >
                             Read Full Story
                           </Button>
@@ -795,7 +766,7 @@ export default function ShelterDashboard({
                         <div className="flex flex-col sm:flex-row lg:flex-col gap-2">
                           <Button
                             onClick={() => handleRegister(event.title)}
-                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all text-xs sm:text-sm"
+                            className="font-semibold text-xs sm:text-sm"
                           >
                             Register
                           </Button>
@@ -803,7 +774,7 @@ export default function ShelterDashboard({
                             variant="outline"
                             size="sm"
                             onClick={() => handleLearnMore(event.title)}
-                            className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                            className="font-medium text-xs sm:text-sm"
                           >
                             Learn More
                           </Button>
@@ -918,19 +889,23 @@ export default function ShelterDashboard({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-muted rounded-lg p-6 sm:p-8 lg:p-12 text-center">
-                    <MapPin className="h-8 w-8 sm:h-12 sm:w-12 lg:h-16 lg:w-16 text-secondary mx-auto mb-4" />
-                    <h4 className="font-semibold text-primary mb-2 text-sm sm:text-base">
-                      Interactive Map
-                    </h4>
-                    <p className="text-muted-foreground mb-4 text-xs sm:text-sm lg:text-base">
-                      Google Maps integration would be displayed here showing
-                      our shelter location and directions.
-                    </p>
+                  <div className="rounded-lg overflow-hidden shadow-lg">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26856383.012892164!2d-114.91367553556066!3d34.74634516141766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e43583a45b275b%3A0x2aff3959248699d2!2sFurever%20Vets%20Central%20Urgent%20Care%20%26%20Pet%20Resort!5e0!3m2!1svi!2s!4v1757651885222!5m2!1svi!2s"
+                      width="100%"
+                      height="450"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-[350px] rounded-lg"
+                    ></iframe>
+                  </div>
+                  <div className="mt-4 text-center">
                     <Button
                       variant="outline"
                       onClick={handleGetDirections}
-                      className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                      className="font-medium text-xs sm:text-sm"
                     >
                       <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                       Get Directions
@@ -946,7 +921,7 @@ export default function ShelterDashboard({
                         variant="outline"
                         size="sm"
                         onClick={handleCallUs}
-                        className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                        className="font-medium text-xs sm:text-sm"
                       >
                         <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         Call Us
@@ -955,7 +930,7 @@ export default function ShelterDashboard({
                         variant="outline"
                         size="sm"
                         onClick={handleEmailUs}
-                        className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                        className="font-medium text-xs sm:text-sm"
                       >
                         <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         Email Us
@@ -966,8 +941,95 @@ export default function ShelterDashboard({
               </Card>
             </div>
           </TabsContent>
+
+          <TabsContent value="wishlist">
+            <div className="space-y-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+                <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
+                Your Wishlist ({wishlist.length})
+              </h2>
+
+              {wishlist.length === 0 ? (
+                <Card>
+                  <CardContent className="p-6 sm:p-8 text-center">
+                    <Heart className="h-12 w-12 sm:h-16 sm:w-16 mx-auto text-muted-foreground mb-4" />
+                    <h3 className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2">
+                      Your wishlist is empty
+                    </h3>
+                    <p className="text-sm sm:text-base text-muted-foreground mb-4">
+                      Browse our pets and add your favorites to your wishlist!
+                    </p>
+                    <Button
+                      onClick={() => setTabValue("gallery")}
+                      className="font-semibold"
+                    >
+                      Browse Pets
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                  {pets
+                    .filter((pet) => wishlist.includes(pet.id))
+                    .map((pet) => (
+                      <Card key={pet.id} className="overflow-hidden">
+                        <div className="aspect-square relative">
+                          <img
+                            src={pet.image}
+                            alt={pet.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <CardContent className="p-3 sm:p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <h3 className="font-bold text-sm sm:text-base text-primary">
+                              {pet.name}
+                            </h3>
+                            <Badge
+                              variant="secondary"
+                              className="text-xs bg-secondary text-secondary-foreground"
+                            >
+                              {pet.type}
+                            </Badge>
+                          </div>
+
+                          <div className="space-y-1 mb-3 text-xs sm:text-sm">
+                            <p>
+                              <span className="font-medium">Breed:</span>{" "}
+                              {pet.breed}
+                            </p>
+                            <p>
+                              <span className="font-medium">Age:</span>{" "}
+                              {pet.age}
+                            </p>
+                            <p>
+                              <span className="font-medium">Gender:</span>{" "}
+                              {pet.gender}
+                            </p>
+                          </div>
+
+                          <p className="text-xs sm:text-sm text-muted-foreground mb-4 line-clamp-2">
+                            {pet.description}
+                          </p>
+
+                          <Button
+                            variant="secondary"
+                            className="w-full font-semibold py-2 text-xs sm:text-sm"
+                            onClick={() => handleAdoptClick(pet.id, pet.name)}
+                          >
+                            <Heart className="h-3 w-3 sm:h-4 sm:w-4 mr-2 fill-current" />
+                            Remove {pet.name}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
+      <Footer userRole="shelter" />
     </div>
   );
 }

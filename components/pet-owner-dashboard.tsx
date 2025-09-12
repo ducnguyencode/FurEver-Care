@@ -27,6 +27,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
+import Footer from "@/components/footer";
 
 interface PetOwnerDashboardProps {
   userName: string;
@@ -269,9 +270,9 @@ export default function PetOwnerDashboard({
                     </p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <Button
-                      className="flex-1 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold"
+                      className="flex-1 font-semibold px-6 py-3 rounded-lg bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary text-secondary-foreground shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
                       disabled={!selectedProduct.inStock}
                       onClick={() => {
                         toast({
@@ -282,13 +283,13 @@ export default function PetOwnerDashboard({
                         closeModal();
                       }}
                     >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      <ShoppingCart className="h-5 w-5 mr-2" />
                       Add to Cart
                     </Button>
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       onClick={closeModal}
-                      className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
+                      className="px-6 py-3 font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     >
                       Close
                     </Button>
@@ -300,25 +301,26 @@ export default function PetOwnerDashboard({
         </div>
       )}
 
-      <header className="bg-card border-b border-border sticky top-0 z-40">
+      <header className="bg-gradient-to-r from-card via-card/95 to-card border-b border-border/50 sticky top-0 z-40 backdrop-blur-md">
         <div className="max-w-[1350px] mx-auto px-4 py-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={onBack}
-                className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent flex-shrink-0"
+                className="font-medium flex-shrink-0 hover:bg-primary/10 border border-primary/20"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
               <div className="min-w-0 flex-1">
-                <h1 className="text-lg sm:text-xl font-bold text-primary truncate">
+                <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent truncate">
                   Welcome, {userName}!
                 </h1>
                 {isPetRegistered && (
-                  <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate flex items-center gap-1">
+                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                     Pet: {petName}
                   </p>
                 )}
@@ -349,22 +351,17 @@ export default function PetOwnerDashboard({
         </div>
       </header>
 
-      <div className="bg-secondary text-secondary-foreground py-2 overflow-hidden">
-        <div className="animate-scroll whitespace-nowrap">
-          <span className="mx-8">
-            🐾 New pet wellness tips available in our care section
-          </span>
-        </div>
-      </div>
-
       <div className="max-w-[1350px] mx-auto px-4 py-8">
         {!isPetRegistered ? (
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader>
-              <CardTitle className="text-primary text-center">
+          <Card className="max-w-2xl mx-auto shadow-xl border-0 bg-gradient-to-br from-card to-card/95">
+            <CardHeader className="text-center pb-8">
+              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🐾</span>
+              </div>
+              <CardTitle className="text-primary text-2xl font-bold">
                 Register Your Pet
               </CardTitle>
-              <p className="text-center text-muted-foreground">
+              <p className="text-center text-muted-foreground text-lg">
                 Please complete all fields to access your pet care dashboard
               </p>
             </CardHeader>
@@ -412,7 +409,7 @@ export default function PetOwnerDashboard({
                 </div>
               </div>
               <Button
-                className="mt-6 w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
+                className="mt-8 w-full font-bold py-4 text-base sm:text-lg bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg"
                 onClick={handlePetRegistration}
                 disabled={
                   !petName.trim() ||
@@ -421,12 +418,14 @@ export default function PetOwnerDashboard({
                   !petAge.trim()
                 }
               >
-                <span className="block sm:hidden">Complete</span>
-                <span className="hidden sm:block">
-                  Complete & Open Dashboard
+                <span className="block sm:hidden flex items-center gap-2">
+                  <span>🚀</span> Complete
+                </span>
+                <span className="hidden sm:flex items-center gap-2">
+                  <span>🚀</span> Complete & Open Dashboard
                 </span>
               </Button>
-              <p className="text-sm text-muted-foreground mt-2 text-center">
+              <p className="text-sm text-muted-foreground mt-4 text-center">
                 * All fields are required
               </p>
             </CardContent>
@@ -792,31 +791,40 @@ export default function PetOwnerDashboard({
                   {filteredProducts.map((product) => (
                     <Card
                       key={product.id}
-                      className="overflow-hidden hover:shadow-lg transition-shadow"
+                      className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-0 shadow-md bg-gradient-to-br from-card to-card/95"
                     >
-                      <div className="aspect-square overflow-hidden">
+                      <div className="aspect-square overflow-hidden relative group">
                         <img
                           src={product.image || "/placeholder.svg"}
                           alt={product.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <Badge variant="outline" className="mb-2">
+                      <CardContent className="p-5">
+                        <div className="flex items-center justify-between mb-3">
+                          <Badge
+                            variant="secondary"
+                            className="bg-primary/10 text-primary border-0 font-medium px-3 py-1"
+                          >
                             {product.category}
                           </Badge>
                           {!product.inStock && (
-                            <Badge variant="destructive">Out of Stock</Badge>
+                            <Badge
+                              variant="destructive"
+                              className="font-medium"
+                            >
+                              Out of Stock
+                            </Badge>
                           )}
                         </div>
-                        <h3 className="font-semibold text-primary mb-2">
+                        <h3 className="font-bold text-primary mb-2 text-lg">
                           {product.name}
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-3">
+                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                           {product.description}
                         </p>
-                        <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center gap-2 mb-4">
                           <div className="flex items-center">
                             {[...Array(5)].map((_, i) => (
                               <Star
@@ -829,21 +837,24 @@ export default function PetOwnerDashboard({
                               />
                             ))}
                           </div>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-sm text-muted-foreground font-medium">
                             ({product.rating})
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-secondary">
+                          <span className="text-xl font-bold text-secondary">
                             {product.price}
                           </span>
                           <Button
-                            size="sm"
-                            className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold shadow-md hover:shadow-lg transition-all"
+                            className={`font-semibold px-6 py-2 rounded-lg transition-all duration-200 ${
+                              product.inStock
+                                ? "bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary text-secondary-foreground shadow-lg hover:shadow-xl hover:scale-105"
+                                : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                            }`}
                             disabled={!product.inStock}
                             onClick={() => handleBuyNow(product)}
                           >
-                            <ShoppingCart className="h-4 w-4 mr-1" />
+                            <ShoppingCart className="h-4 w-4 mr-2" />
                             {product.inStock ? "Buy Now" : "Sold Out"}
                           </Button>
                         </div>
@@ -950,7 +961,7 @@ export default function PetOwnerDashboard({
                         placeholder="Share your thoughts about our service..."
                       />
                     </div>
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2 shadow-lg hover:shadow-xl transition-all">
+                    <Button className="w-full font-semibold py-2">
                       Submit Feedback
                     </Button>
                   </div>
@@ -1015,14 +1026,17 @@ export default function PetOwnerDashboard({
                       <h4 className="font-semibold text-primary mb-4 text-sm sm:text-base">
                         Location
                       </h4>
-                      <div className="bg-muted rounded-lg p-6 sm:p-8 text-center">
-                        <MapPin className="h-8 w-8 sm:h-12 sm:w-12 text-secondary mx-auto mb-2" />
-                        <p className="text-muted-foreground text-sm">
-                          Interactive Map
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          Google Maps integration would be here
-                        </p>
+                      <div className="rounded-lg overflow-hidden shadow-lg">
+                        <iframe
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26856383.012892164!2d-114.91367553556066!3d34.74634516141766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e43583a45b275b%3A0x2aff3959248699d2!2sFurever%20Vets%20Central%20Urgent%20Care%20%26%20Pet%20Resort!5e0!3m2!1svi!2s!4v1757651885222!5m2!1svi!2s"
+                          width="100%"
+                          height="300"
+                          style={{ border: 0 }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          className="w-full h-[300px] rounded-lg"
+                        ></iframe>
                       </div>
                     </div>
                   </div>
@@ -1032,6 +1046,7 @@ export default function PetOwnerDashboard({
           </Tabs>
         )}
       </div>
+      <Footer userRole="pet-owner" />
     </div>
   );
 }

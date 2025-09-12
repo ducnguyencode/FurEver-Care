@@ -30,6 +30,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import Footer from "@/components/footer";
 
 interface VeterinarianDashboardProps {
   userName: string;
@@ -218,7 +219,7 @@ export default function VeterinarianDashboard({
                 variant="outline"
                 size="sm"
                 onClick={onBack}
-                className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent flex-shrink-0"
+                className="font-medium flex-shrink-0"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
@@ -252,14 +253,6 @@ export default function VeterinarianDashboard({
           </div>
         </div>
       </header>
-
-      <div className="bg-secondary text-secondary-foreground py-2 overflow-hidden">
-        <div className="animate-scroll whitespace-nowrap">
-          <span className="mx-8">
-            🏥 Veterinarian Portal - Managing pet health with excellence
-          </span>
-        </div>
-      </div>
 
       <div className="max-w-[1350px] mx-auto px-4 py-8">
         {!isProfileComplete ? (
@@ -307,7 +300,7 @@ export default function VeterinarianDashboard({
                 </div>
               </div>
               <Button
-                className="mt-6 w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
+                className="mt-6 w-full font-semibold py-3 text-base sm:text-lg"
                 onClick={handleProfileSubmit}
                 disabled={
                   !vetName.trim() ||
@@ -647,7 +640,7 @@ export default function VeterinarianDashboard({
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                                  className="w-full font-medium text-xs sm:text-sm"
                                 >
                                   View Weekly Schedule
                                 </Button>
@@ -698,7 +691,7 @@ export default function VeterinarianDashboard({
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="w-full border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                                  className="w-full font-medium text-xs sm:text-sm text-secondary hover:bg-secondary hover:text-secondary-foreground"
                                 >
                                   Emergency Slot
                                 </Button>
@@ -836,7 +829,7 @@ export default function VeterinarianDashboard({
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-full mt-4 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-medium bg-transparent text-xs sm:text-sm"
+                              className="w-full mt-4 font-medium text-xs sm:text-sm"
                             >
                               <Eye className="h-4 w-4 mr-2" />
                               View Full Case Details
@@ -955,6 +948,7 @@ export default function VeterinarianDashboard({
           </Tabs>
         )}
       </div>
+      <Footer userRole="veterinarian" />
     </div>
   );
 }
